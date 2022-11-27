@@ -1,0 +1,10 @@
+---
+- name: playbook for common config tasks
+  hosts: all
+  become: yes
+  tasks:
+    - name: latest aptitude installed & cache updated
+      ansible.builtin.apt:
+        name: aptitude
+        state: latest
+        update_cache: yes
