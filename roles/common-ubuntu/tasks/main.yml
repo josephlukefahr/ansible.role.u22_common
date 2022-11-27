@@ -1,0 +1,47 @@
+---
+### apt maintenance & package install
+- name: cache updated, packages upgraded
+  ansible.builtin.apt:
+    update_cache: yes
+    upgrade: safe
+- name: latest packages installed
+  ansible.builtin.apt:
+    name:
+      - aptitude
+      - systemd-timesyncd
+      - unattended-upgrades
+      - ufw
+    state: latest
+### firewall config
+- name: ssh allowed but rate-limited by ufw to mitigate ssh brute force attacks
+  community.general.ufw:
+    rule: limit
+    port: ssh
+    proto: tcp
+- name: ufw enabled and set to deny by default
+  community.general.ufw:
+    state: enabled
+    default: deny
+### sshd config
+- name: root ssh configuration removed
+  notify: sshd restart
+  ansible.builtin.file:
+    path: /root/.ssh 
+    state: absent
+- name: root ssh login disabled
+  notify: sshd restart
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^#?PermitRootLogin'
+    line: 'PermitRootLogin no'
+### locale config
+- name: locale set to en/us
+  community.general.locale_gen:
+    name: en_US.UTF-8
+    state: present
+### time/date config
+- name: timezone set to utc
+  notify: tzdata refresh
+  community.general.timezone:
+    name: Etc/UTC

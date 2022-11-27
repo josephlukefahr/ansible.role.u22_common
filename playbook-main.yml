@@ -1,3 +1,6 @@
 ---
-- name: run all playbooks
-  import_playbook: playbook-common.yml
+- name: role assignment
+  hosts: ubuntu
+  roles:
+    - common-ubuntu
+    - web-ubuntu
