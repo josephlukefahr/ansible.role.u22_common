@@ -14,6 +14,7 @@
         become: yes
         path: /root/.ssh 
         state: absent
+        notify: sshd restart
     - name: root ssh login disabled
       ansible.builtin.lineinfile:
         become: yes
@@ -21,4 +22,10 @@
         state: present
         regexp: '^#?PermitRootLogin'
         line: 'PermitRootLogin no'
+        notify: sshd restart
+  handlers:
+    - name: sshd restart
+      ansible.builtin.service:
+        name: ssh
+        state: restarted
         
