@@ -1,0 +1,6 @@
+---
+- name: assign roles to server
+  hosts: server
+  become: yes
+  roles:
+    - common
