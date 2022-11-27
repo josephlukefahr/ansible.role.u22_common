@@ -3,8 +3,10 @@
   hosts: all
   become: yes
   tasks:
-    - name: latest aptitude installed & cache updated
+    - name: latest aptitude installed, cache updated, packages upgraded
       ansible.builtin.apt:
         name: aptitude
         state: latest
         update_cache: yes
+        upgrade: safe
+        
