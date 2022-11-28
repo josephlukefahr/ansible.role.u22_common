@@ -1,6 +1,7 @@
 ---
-- name: role assignment
+- name: ubuntu
   hosts: ubuntu
   roles:
     - common-ubuntu
     - web-ubuntu
+    - cache-ubuntu

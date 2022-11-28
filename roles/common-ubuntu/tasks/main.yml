@@ -1,18 +1,19 @@
 ---
 ### apt maintenance & package install
-- name: cache updated, packages upgraded
-  ansible.builtin.apt:
-    update_cache: yes
-    upgrade: safe
-- name: latest packages installed
+- name: select system packages installed/updated
   ansible.builtin.apt:
     name:
       - aptitude
+      - rsync
       - systemd-timesyncd
       - unattended-upgrades
       - ufw
     state: latest
+    update_cache: yes
 ### firewall config
+- name: firewall rules reset
+  community.general.ufw:
+    state: reset
 - name: ssh allowed but rate-limited by ufw to mitigate ssh brute force attacks
   community.general.ufw:
     rule: limit
