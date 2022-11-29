@@ -1,5 +1,5 @@
 ---
-- name: nginx code signing key registered
+- name: nginx code signing key in place
   ansible.builtin.get_url:
     url: https://nginx.org/keys/nginx_signing.key
     dest: /etc/apt/trusted.gpg.d/nginx.asc
@@ -12,6 +12,11 @@
     name: nginx=1.18*
     state: present
     update_cache: yes
+- name: nginx service enabled
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: yes
 - name: nginx custom default site content in place
   ansible.builtin.copy:
     src: 8080-default
@@ -24,8 +29,6 @@
   ansible.builtin.copy:
     src: nginx/sites-available
     dest: /etc/nginx
-    owner: root
-    group: root
     mode: preserve
 - name: nginx conf.d directory removed
   ansible.builtin.file:
@@ -36,8 +39,6 @@
   ansible.builtin.copy:
     src: nginx/conf.d
     dest: /etc/nginx
-    owner: root
-    group: root
     mode: preserve
 - name: nginx sites-enabled directory removed
   ansible.builtin.file:
@@ -52,16 +53,12 @@
   ansible.builtin.file:
     src: /etc/nginx/sites-available/8080-default
     dest: /etc/nginx/sites-enabled/8080-default
-    owner: root
-    group: root
     state: link
 - name: nginx main config reset
   notify: nginx restart
   ansible.builtin.copy:
     src: nginx.conf
     dest: /etc/nginx
-    owner: root
-    group: root
     mode: '0644'
 - name: php 8.1 installed
   ansible.builtin.apt:
@@ -85,13 +82,15 @@
   ansible.builtin.copy:
     src: php.ini
     dest: /etc/php/8.1/fpm
-    owner: root
-    group: root
     mode: '0644'
 - name: php8.1-cli configuration reset
   ansible.builtin.copy:
     src: php.ini
     dest: /etc/php/8.1/cli
-    owner: root
-    group: root
     mode: '0644'
+- name: composer 2.2 installed
+  ansible.builtin.get_url:
+    url: https://getcomposer.org/download/latest-2.2.x/composer.phar
+    checksum: sha256:https://getcomposer.org/download/latest-2.2.x/composer.phar.sha256sum
+    dest: /usr/local/bin/composer
+    mode: '0755'
