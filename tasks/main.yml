@@ -37,11 +37,10 @@
 ### locale config
 - name: locale set to en/us
   community.general.locale_gen:
-    name: {{u22-common-locale}}
+    name: "{{u22-common-locale}}"
     state: present
 ### time/date config
 - name: timezone set to utc
   notify: tzdata refresh
   community.general.timezone:
-    name: {{u22-common-timezone}}
-    
+    name: "{{u22-common-timezone}}"
