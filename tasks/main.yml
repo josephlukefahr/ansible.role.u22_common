@@ -1,5 +1,8 @@
 ---
 ### apt maintenance & package install
+- name: apt cache updated
+  ansible.builtin.apt:
+    update_cache: yes
 - name: select system packages installed/updated
   ansible.builtin.apt:
     name:
@@ -23,12 +26,12 @@
     default: deny
 ### sshd config
 - name: root ssh configuration removed
-  notify: sshd restart
+  notify: restart sshd
   ansible.builtin.file:
     path: /root/.ssh 
     state: absent
 - name: root ssh login disabled
-  notify: sshd restart
+  notify: restart sshd
   ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config
     state: present
@@ -41,6 +44,6 @@
     state: present
 ### time/date config
 - name: timezone set to utc
-  notify: tzdata refresh
+  notify: refresh tzdata
   community.general.timezone:
     name: "{{u22_common_timezone}}"
