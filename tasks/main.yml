@@ -4,12 +4,10 @@
   ansible.builtin.apt:
     name:
       - aptitude
-      - rsync
       - systemd-timesyncd
       - unattended-upgrades
       - ufw
     state: latest
-    update_cache: yes
 ### firewall config
 - name: firewall rules reset
   community.general.ufw:
@@ -39,10 +37,11 @@
 ### locale config
 - name: locale set to en/us
   community.general.locale_gen:
-    name: en_US.UTF-8
+    name: {{u22-common-locale}}
     state: present
 ### time/date config
 - name: timezone set to utc
   notify: tzdata refresh
   community.general.timezone:
-    name: Etc/UTC
+    name: {{u22-common-timezone}}
+    

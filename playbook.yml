@@ -1,9 +1,0 @@
----
-- name: ubuntu
-  hosts: ubuntu
-  roles:
-    - common-ubuntu
-    - web-ubuntu
-    - db-ubuntu
-    - cache-ubuntu
-    - search-ubuntu
