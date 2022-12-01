@@ -2,7 +2,7 @@
 ### hostname
 - name: hostname reset
   ansible.builtin.hostname:
-    name: {{u22_common_hostname}}
+    name: "{{u22_common_hostname}}"
 - name: hosts file reset
   ansible.builtin.lineinfile:
     path: /etc/hosts
