@@ -1,4 +1,14 @@
 ---
+### hostname
+- name: hostname reset
+  ansible.builtin.hostname:
+    name: {{u22_common_hostname}}
+- name: hosts file reset
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    state: present
+    regexp: '^127.0.1.1'
+    line: '127.0.1.1 {{u22_common_hostname}} {{u22_domain_info.name | join(' ')}}'    
 ### apt maintenance & package install
 - name: apt cache updated
   ansible.builtin.apt:
