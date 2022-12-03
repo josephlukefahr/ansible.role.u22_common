@@ -25,11 +25,13 @@
 - name: firewall rules reset
   community.general.ufw:
     state: reset
-- name: ssh allowed but rate-limited by ufw to mitigate ssh brute force attacks
+- name: ssh arate-limited by ufw from whitelisted ips
   community.general.ufw:
     rule: limit
+    frmo_ip: "{{item}}"
     port: ssh
     proto: tcp
+  loop: "{{u22_common_whitelisted_ips}}"
 - name: ufw enabled and set to deny by default
   community.general.ufw:
     state: enabled
