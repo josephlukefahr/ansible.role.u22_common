@@ -28,7 +28,7 @@
 - name: ssh arate-limited by ufw from whitelisted ips
   community.general.ufw:
     rule: limit
-    frmo_ip: "{{item}}"
+    from_ip: "{{item}}"
     port: ssh
     proto: tcp
   loop: "{{u22_common_whitelisted_ips}}"
