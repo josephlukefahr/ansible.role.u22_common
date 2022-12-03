@@ -25,7 +25,7 @@
 - name: firewall rules reset
   community.general.ufw:
     state: reset
-- name: ssh arate-limited by ufw from whitelisted ips
+- name: ssh rate-limited by ufw from whitelisted ips
   community.general.ufw:
     rule: limit
     from_ip: "{{item}}"
